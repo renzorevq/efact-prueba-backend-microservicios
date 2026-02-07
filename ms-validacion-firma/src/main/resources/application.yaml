@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: ms-validacion-firma
+
+server:
+  port: 8082

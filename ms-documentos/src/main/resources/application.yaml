@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: ms-documentos
+
+server:
+  port: 8081
+
+
