@@ -56,13 +56,21 @@ public class DocumentoService {
         return _repository.findById(idDocumento)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Documento no encontrado"
+                        "El documento no existe"
                 ));
     }
 
     public DocumentoResponse eliminarDocumento(String idDocumento) {
-        // Eliminar
+
+        // Buscar el docuemnto
         Documento documentoEncontrado = buscarDocumentoPorId(idDocumento);
+
+        // Verificar que aun no este eliminado
+        if(documentoEncontrado.getValidacion().getEstado() == Estado.ELIMINADO) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El documento ya ha sido eliminado");
+        }
+
+        // Eliminar
         documentoEncontrado.getValidacion().setEstado(Estado.ELIMINADO);
 
         // Respuesta
