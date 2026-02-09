@@ -49,7 +49,7 @@ public class DocumentoService {
 
         // return
         Documento documentoCreado = _repository.save(documento);
-        return obtenerRespuestaCreacionDocumento(documentoCreado);
+        return obtenerRespuestaPostDocumento("Documento creado con exito", documentoCreado);
     }
 
     public Documento buscarDocumentoPorId(String idDocumento){
@@ -60,9 +60,21 @@ public class DocumentoService {
                 ));
     }
 
-    private DocumentoResponse obtenerRespuestaCreacionDocumento(Documento documento) {
+    public DocumentoResponse eliminarDocumento(String idDocumento) {
+        // Eliminar
+        Documento documentoEncontrado = buscarDocumentoPorId(idDocumento);
+        documentoEncontrado.getValidacion().setEstado(Estado.ELIMINADO);
+
+        // Respuesta
+        Documento documentoEliminado = _repository.save(documentoEncontrado);
+        return obtenerRespuestaPostDocumento("Documento eliminado con exito", documentoEliminado);
+    }
+
+    // UTILS
+
+    private DocumentoResponse obtenerRespuestaPostDocumento(String mensaje, Documento documento) {
         DocumentoResponse response = new DocumentoResponse();
-        response.setMensaje("Documento creado con exito");
+        response.setMensaje(mensaje);
         response.setIdDocumento(documento.getIdDocumento());
         response.setUuid(documento.getUuid());
         return response;

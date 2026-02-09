@@ -36,4 +36,9 @@ public class DocumentoController {
     public Documento buscarDocuemnto(@PathVariable String idDocumento) {
         return _service.buscarDocumentoPorId(idDocumento);
     }
+
+    @DeleteMapping("/{idDocumento}")
+    public DocumentoResponse eliminarDocumento(@PathVariable String idDocumento) {
+        return _service.eliminarDocumento(idDocumento);
+    }
 }
