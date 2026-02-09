@@ -1,8 +1,11 @@
-spring:
-  application:
-    name: ms-documentos
+application:
+  name: ms-documents
 
 server:
   port: 8081
 
-
+spring:
+  mongodb:
+    host: localhost
+    port: 27017
+    database: documento_bd
