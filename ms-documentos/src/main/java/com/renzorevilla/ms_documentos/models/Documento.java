@@ -69,27 +69,27 @@ public class Documento {
         this.items = items;
     }
 
-    public double getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
-    public double getIgv() {
+    public Double getIgv() {
         return igv;
     }
 
-    public void setIgv(double igv) {
+    public void setIgv(Double igv) {
         this.igv = igv;
     }
 
-    public double getSubtotal() {
+    public Double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(double subtotal) {
+    public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
     }
 

@@ -33,12 +33,20 @@ public class DocumentoController {
     }
 
     @GetMapping("/{idDocumento}")
+    @ResponseStatus(HttpStatus.OK)
     public Documento buscarDocuemnto(@PathVariable String idDocumento) {
         return _service.buscarDocumentoPorId(idDocumento);
     }
 
     @DeleteMapping("/{idDocumento}")
+    @ResponseStatus(HttpStatus.OK)
     public DocumentoResponse eliminarDocumento(@PathVariable String idDocumento) {
         return _service.eliminarDocumento(idDocumento);
+    }
+
+    @PutMapping("/{idDocumento}")
+    @ResponseStatus(HttpStatus.OK)
+    public DocumentoResponse actualizarDocumento(@PathVariable String idDocumento, @RequestBody Documento documento) {
+        return this._service.actualizarDocumento(idDocumento, documento);
     }
 }
