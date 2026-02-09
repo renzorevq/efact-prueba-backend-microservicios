@@ -36,4 +36,9 @@ public class DocumentoController {
                 "uuid", documentoNuevo.getUuid()
         );
     }
+
+    @GetMapping("/{idDocumento}")
+    public Documento buscarDocuemnto(@PathVariable String idDocumento) {
+        return _service.buscarDocumentoPorId(idDocumento);
+    }
 }

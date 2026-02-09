@@ -4,7 +4,9 @@ import com.renzorevilla.ms_documentos.models.Documento;
 import com.renzorevilla.ms_documentos.models.Estado;
 import com.renzorevilla.ms_documentos.models.Validacion;
 import com.renzorevilla.ms_documentos.repositories.DocumentoRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,6 +48,14 @@ public class DocumentoService {
 
         // return
         return _repository.save(documento);
+    }
+
+    public Documento buscarDocumentoPorId(String idDocumento){
+        return _repository.findById(idDocumento)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Documento no encontrado"
+                ));
     }
 
     private Documento buscarUltimoDocumento(){
