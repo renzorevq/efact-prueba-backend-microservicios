@@ -1,11 +1,24 @@
 package com.renzorevilla.ms_documentos.models;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class Item {
+
+    @NotBlank(message = "El campo es obligatorio")
     private String descripcion;
-    private double precio;
-    private double cantidad;
-    private double total;
-    private double igv;
+
+    @NotNull(message = "El campo es obligatorio")
+    private Double precio;
+
+    @NotNull(message = "El campo es obligatorio")
+    private Double cantidad;
+
+    @NotNull(message = "El campo es obligatorio")
+    private Double total;
+
+    @NotNull(message = "El campo es obligatorio")
+    private Double igv;
 
     public String getDescripcion() {
         return descripcion;

@@ -1,8 +1,11 @@
 package com.renzorevilla.ms_documentos.models;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 
 public class Validacion {
+
     private LocalDateTime fecha;
     private String firma;
     private Estado estado;
