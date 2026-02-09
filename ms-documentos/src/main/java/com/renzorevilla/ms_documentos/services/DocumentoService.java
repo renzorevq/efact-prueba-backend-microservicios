@@ -23,7 +23,7 @@ public class DocumentoService {
     }
 
     public List<Documento> listarDocumentos() {
-        return _repository.findAll();
+        return _repository.findByValidacionEstadoNot(Estado.ELIMINADO);
     }
 
     public DocumentoResponse crearDocumento(Documento documento) {
