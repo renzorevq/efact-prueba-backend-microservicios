@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/documento")
+@RequestMapping("/documents")
 public class DocumentoController {
 
     private DocumentoService _service;
