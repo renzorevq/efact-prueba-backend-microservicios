@@ -1,19 +1,16 @@
 package com.renzorevilla.ms_documentos.services;
 
-import com.renzorevilla.ms_documentos.models.Documento;
-import com.renzorevilla.ms_documentos.models.DocumentoResponse;
-import com.renzorevilla.ms_documentos.models.Estado;
-import com.renzorevilla.ms_documentos.models.Validacion;
+import com.renzorevilla.ms_documentos.config.RabbitConstants;
+import com.renzorevilla.ms_documentos.messaging.DocumentoCreadoEvent;
+import com.renzorevilla.ms_documentos.models.*;
 import com.renzorevilla.ms_documentos.repositories.DocumentoRepository;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import jakarta.validation.Validator;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.print.Doc;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -24,10 +21,12 @@ public class DocumentoService {
 
     private DocumentoRepository _repository;
     private Validator _validator;
+    private RabbitTemplate _rabbitTemplate;
 
-    public DocumentoService(DocumentoRepository repository, Validator validator) {
+    public DocumentoService(DocumentoRepository repository, Validator validator, RabbitTemplate rabbitTemplate) {
         this._repository = repository;
         this._validator = validator;
+        this._rabbitTemplate = rabbitTemplate;
     }
 
     public List<Documento> listarDocumentos() {
@@ -55,8 +54,15 @@ public class DocumentoService {
 
         documento.setValidacion(validacionInicial);
 
-        // return
+        // documento creado
         Documento documentoCreado = _repository.save(documento);
+
+        // Enviar mensaje
+        String idDocuemnto = documentoCreado.getIdDocumento();
+        UUID uuid = documentoCreado.getUuid();
+        _rabbitTemplate.convertAndSend(RabbitConstants.EXCHANGE, RabbitConstants.ROUTING_KEY_DOCUMENTOS_CREADOS,new DocumentoCreadoEvent(idDocuemnto, uuid));
+
+        // retornar respuesta
         return obtenerRespuestaPostDocumento("Documento creado con exito", documentoCreado);
     }
 

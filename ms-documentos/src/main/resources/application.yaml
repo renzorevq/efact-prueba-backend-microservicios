@@ -9,3 +9,9 @@ spring:
     host: localhost
     port: 27017
     database: documento_bd
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
