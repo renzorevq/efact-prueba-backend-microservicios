@@ -1,6 +1,7 @@
 package com.renzorevilla.ms_documentos.controller;
 
 import com.renzorevilla.ms_documentos.models.Documento;
+import com.renzorevilla.ms_documentos.models.DocumentoResponse;
 import com.renzorevilla.ms_documentos.services.DocumentoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,14 +28,8 @@ public class DocumentoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Map<String, Object> crearDocumento(@Valid @RequestBody Documento documento) {
-        Documento documentoNuevo = this._service.crearDocumento(documento);
-
-        return Map.of(
-                "mensaje", "Documento " + documentoNuevo.getIdDocumento() + " creado correctamente",
-                "idDocumento", documentoNuevo.getIdDocumento(),
-                "uuid", documentoNuevo.getUuid()
-        );
+    public DocumentoResponse crearDocumento(@Valid @RequestBody Documento documento) {
+        return this._service.crearDocumento(documento);
     }
 
     @GetMapping("/{idDocumento}")

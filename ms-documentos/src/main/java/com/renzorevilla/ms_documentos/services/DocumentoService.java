@@ -1,6 +1,7 @@
 package com.renzorevilla.ms_documentos.services;
 
 import com.renzorevilla.ms_documentos.models.Documento;
+import com.renzorevilla.ms_documentos.models.DocumentoResponse;
 import com.renzorevilla.ms_documentos.models.Estado;
 import com.renzorevilla.ms_documentos.models.Validacion;
 import com.renzorevilla.ms_documentos.repositories.DocumentoRepository;
@@ -25,7 +26,7 @@ public class DocumentoService {
         return _repository.findAll();
     }
 
-    public Documento crearDocumento(Documento documento) {
+    public DocumentoResponse crearDocumento(Documento documento) {
 
         // Id de ultimo Documento
         Documento ultimoDocumento = buscarUltimoDocumento();
@@ -47,7 +48,8 @@ public class DocumentoService {
         documento.setValidacion(validacionInicial);
 
         // return
-        return _repository.save(documento);
+        Documento documentoCreado = _repository.save(documento);
+        return obtenerRespuestaCreacionDocumento(documentoCreado);
     }
 
     public Documento buscarDocumentoPorId(String idDocumento){
@@ -56,6 +58,14 @@ public class DocumentoService {
                         HttpStatus.NOT_FOUND,
                         "Documento no encontrado"
                 ));
+    }
+
+    private DocumentoResponse obtenerRespuestaCreacionDocumento(Documento documento) {
+        DocumentoResponse response = new DocumentoResponse();
+        response.setMensaje("Documento creado con exito");
+        response.setIdDocumento(documento.getIdDocumento());
+        response.setUuid(documento.getUuid());
+        return response;
     }
 
     private Documento buscarUltimoDocumento(){
