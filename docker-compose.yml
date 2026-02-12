@@ -1,23 +1,60 @@
 services:
+
   mongo:
     image: mongo:7.0
-    container_name: efact-mongo
+    container_name: mongo-container
     ports:
       - "27017:27017"
-    environment:
-      MONGO_INITDB_DATABASE: documents_db
-    volumes:
-      - mongo_data:/data/db
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: efact-rabbitmq
+    container_name: rabbit-container
     ports:
       - "5672:5672"
       - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
 
-volumes:
-  mongo_data:
+  ms-validacion-firma:
+    build: ./ms-validacion-firma
+    container_name: ms-validacion-container
+    environment:
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_DB: ${MONGO_DB}
+      RABBIT_HOST: ${RABBIT_HOST}
+      RABBIT_PORT: ${RABBIT_PORT}
+      RABBIT_USER: ${RABBIT_USER}
+      RABBIT_PASS: ${RABBIT_PASS}
+      PRIVATE_KEY: ${PRIVATE_KEY}
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  ms-documentos:
+    build: ./ms-documentos
+    container_name: ms-documentos-container
+    environment:
+
+#      MONGO
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_DB: ${MONGO_BD}
+
+#      RABBIT
+      RABBIT_HOST: ${RABBIT_HOST}
+      RABBIT_PORT: ${RABBIT_PORT}
+      RABBIT_USER: ${RABBIT_USER}
+      RABBIT_PASS: ${RABBIT_PASS}
+
+#      PRIVATE KEY
+      PRIVATE_KEY: ${PRIVATE_KEY}
+
+    ports:
+      - "5001:8081"
+    depends_on:
+      - mongo
+      - rabbitmq
+      - ms-validacion-firma
+
+
+
+

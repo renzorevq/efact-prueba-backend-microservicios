@@ -1,17 +1,21 @@
 application:
-  name: ms-documents
+  name: ms-documentos
 
 server:
   port: 8081
 
 spring:
   mongodb:
-    host: localhost
-    port: 27017
-    database: documento_bd
+    host: ${MONGO_HOST:localhost}
+    port: ${MONGO_PORT:27017}
+    database: ${MONGO_BD:documento_bd}
 
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${RABBIT_HOST:localhost}
+    port: ${RABBIT_PORT:5672}
+    username: ${RABBIT_DEFAULT_USER:guest}
+    password: ${RABBITMQ_DEFAULT_PASS:guest}
+
+app:
+  key:
+    private: ${PRIVATE_KEY:Lz^&RQukkUsBBH!9RihP}
