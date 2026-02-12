@@ -39,7 +39,7 @@ public class DocumentoService {
                     documentoValidado.getValidacion().getFecha(),
                     documentoValidado.getValidacion().getFirma()
             );
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             System.out.println("Error al procesar la firma en " + idDocumento + ": " + e.getMessage());
         }
     }
