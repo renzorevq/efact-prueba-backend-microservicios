@@ -38,12 +38,10 @@ public class ValidacionService {
                 .stream()
                 .allMatch(item -> {
 
-                    BigDecimal total = item.getPrecio().multiply(item.getCantidad());
-                    BigDecimal igv = item.getTotal().multiply(Tasa.IGV).setScale(2, RoundingMode.HALF_UP);
+                    BigDecimal subtotal = item.getPrecio().multiply(item.getCantidad());
+                    BigDecimal igv = subtotal.multiply(Tasa.IGV).setScale(2, RoundingMode.HALF_UP);
 
-                    return item.getTotal().compareTo(total) == 0 &&
-                            item.getIgv().compareTo(igv) == 0;
-
+                    return item.getTotal().compareTo(subtotal.add(igv)) == 0;
                 });
     }
 
@@ -52,7 +50,7 @@ public class ValidacionService {
         BigDecimal subTotal = documento
                 .getItems()
                 .stream()
-                .map(Item::getTotal)
+                .map(i -> i.getPrecio().multiply(i.getCantidad()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if(documento.getSubTotal().compareTo(subTotal) != 0)
