@@ -1,7 +1,5 @@
 # Prueba Tecnica Efact Backend Microservicios
 
----
-
 ## Ejecucion del proyecto
 
 ### Levantar los servicios
@@ -28,8 +26,6 @@ http://localhost:5000
 | DELETE | `/documents/{idDocumento}` | Eliminar documento                               |
 | POST | `/documents/verificar-validez` | Verificar la validez de la firma y el documento  |
 
----
-
 ## Ejemplo – Crear Documento
 
 ```json
@@ -51,8 +47,6 @@ http://localhost:5000
   ]
 }
 ```
-
----
 
 ## Ejemplo – Verificar Validez
 
