@@ -6,6 +6,9 @@ import java.math.BigDecimal;
 
 public class Item {
 
+    @Field("descripcion")
+    private String descripcion;
+
     @Field("precio")
     private BigDecimal precio;
 
@@ -49,5 +52,13 @@ public class Item {
 
     public void setIgv(BigDecimal igv) {
         this.igv = igv;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

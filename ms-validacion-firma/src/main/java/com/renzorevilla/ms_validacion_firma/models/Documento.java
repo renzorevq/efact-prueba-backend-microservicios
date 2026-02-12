@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,8 +18,17 @@ public class Documento {
     @Field("uuid")
     public UUID uuid;
 
+    @Field("rucEmisor")
+    private String rucEmisor;
+
+    @Field("rucReceptor")
+    private String rucReceptor;
+
+    @Field("fecha")
+    private LocalDateTime fecha;
+
     @Field("subtotal")
-    private BigDecimal subTotal;
+    private BigDecimal subtotal;
 
     @Field("igv")
     private BigDecimal igv;
@@ -48,12 +58,12 @@ public class Documento {
         this.uuid = uuid;
     }
 
-    public BigDecimal getSubTotal() {
-        return subTotal;
+    public BigDecimal getSubtotal() {
+        return subtotal;
     }
 
-    public void setSubTotal(BigDecimal subTotal) {
-        this.subTotal = subTotal;
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
     }
 
     public BigDecimal getIgv() {
@@ -86,5 +96,29 @@ public class Documento {
 
     public void setValidacion(Validacion validacion) {
         this.validacion = validacion;
+    }
+
+    public String getRucEmisor() {
+        return rucEmisor;
+    }
+
+    public void setRucEmisor(String rucEmisor) {
+        this.rucEmisor = rucEmisor;
+    }
+
+    public String getRucReceptor() {
+        return rucReceptor;
+    }
+
+    public void setRucReceptor(String rucReceptor) {
+        this.rucReceptor = rucReceptor;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
     }
 }

@@ -2,6 +2,8 @@ package com.renzorevilla.ms_documentos.controller;
 
 import com.renzorevilla.ms_documentos.models.Documento;
 import com.renzorevilla.ms_documentos.models.DocumentoResponse;
+import com.renzorevilla.ms_documentos.models.ValidacionRequest;
+import com.renzorevilla.ms_documentos.models.ValidacionResponse;
 import com.renzorevilla.ms_documentos.services.DocumentoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -48,5 +50,10 @@ public class DocumentoController {
     @ResponseStatus(HttpStatus.OK)
     public DocumentoResponse actualizarDocumento(@PathVariable String idDocumento, @RequestBody Documento documento) {
         return this._service.actualizarDocumento(idDocumento, documento);
+    }
+
+    @PostMapping("/verificar-validez")
+    public ValidacionResponse verificarValidezDocumento(@RequestBody ValidacionRequest request) {
+        return this._service.verificarValidezDocumento(request);
     }
 }

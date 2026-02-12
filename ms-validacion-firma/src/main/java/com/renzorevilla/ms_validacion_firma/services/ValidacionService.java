@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class ValidacionService {
@@ -27,7 +28,7 @@ public class ValidacionService {
 
     public Documento agregarValidacionDocumento(Documento documento, boolean esValido) {
         documento.getValidacion().setEstado(esValido ? Estado.VALIDO : Estado.INVALIDO);
-        documento.getValidacion().setFecha(LocalDateTime.now());
+        documento.getValidacion().setFecha(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS));
         return documento;
     }
 
@@ -53,7 +54,7 @@ public class ValidacionService {
                 .map(i -> i.getPrecio().multiply(i.getCantidad()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if(documento.getSubTotal().compareTo(subTotal) != 0)
+        if(documento.getSubtotal().compareTo(subTotal) != 0)
             return false;
 
         BigDecimal igv = documento
@@ -65,7 +66,7 @@ public class ValidacionService {
         if(documento.getIgv().compareTo(igv) != 0)
             return false;
 
-        BigDecimal total = documento.getSubTotal().add(documento.getIgv());
+        BigDecimal total = documento.getSubtotal().add(documento.getIgv());
 
         return documento.getTotal().compareTo(total) == 0;
     }

@@ -33,4 +33,13 @@ public class Validacion {
     public void setEstado(Estado estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return "Validacion{" +
+                "fecha=" + fecha +
+                ", firma='" + firma + '\'' +
+                ", estado=" + estado +
+                '}';
+    }
 }

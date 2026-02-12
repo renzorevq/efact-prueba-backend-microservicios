@@ -62,6 +62,8 @@ public class FirmaService {
             System.arraycopy(iv, 0, paquete, 0, iv.length);
             System.arraycopy(encriptado, 0, paquete, iv.length, encriptado.length);
 
+            System.out.println("HASH_FIRMADO(ms2): " + Base64.getEncoder().encodeToString(hash));
+
             return Base64.getEncoder().encodeToString(paquete);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -81,6 +83,7 @@ public class FirmaService {
     private byte[] obtenerBytes(Documento documento) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            System.out.println("JSON(ms2): " + mapper.writeValueAsString(documento));
             return mapper.writeValueAsBytes(documento);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

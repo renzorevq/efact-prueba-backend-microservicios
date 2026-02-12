@@ -4,31 +4,28 @@ import com.renzorevilla.ms_documentos.config.RabbitConstants;
 import com.renzorevilla.ms_documentos.messaging.DocumentoCreadoEvent;
 import com.renzorevilla.ms_documentos.models.*;
 import com.renzorevilla.ms_documentos.repositories.DocumentoRepository;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
 public class DocumentoService {
 
     private DocumentoRepository _repository;
-    private Validator _validator;
     private RabbitTemplate _rabbitTemplate;
+    private ValidacionService _validacionService;
 
-    public DocumentoService(DocumentoRepository repository, Validator validator, RabbitTemplate rabbitTemplate) {
+    public DocumentoService(DocumentoRepository repository, RabbitTemplate rabbitTemplate, ValidacionService validacionService) {
         this._repository = repository;
-        this._validator = validator;
         this._rabbitTemplate = rabbitTemplate;
+        this._validacionService = validacionService;
     }
 
     public List<Documento> listarDocumentos() {
@@ -46,7 +43,7 @@ public class DocumentoService {
         // Documento
         documento.setIdDocumento(idDocumento);
         documento.setUuid(UUID.randomUUID());
-        documento.setFecha(LocalDateTime.now());
+        documento.setFecha(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS));
 
         // Validacion
         Validacion validacionInicial = new Validacion();
@@ -117,6 +114,14 @@ public class DocumentoService {
 
         // Respuesta
         return obtenerRespuestaPostDocumento("El documento ha sido actualizado con exito", documentoEncontrado);
+    }
+
+    public ValidacionResponse verificarValidezDocumento(ValidacionRequest request) {
+        try {
+            return this._validacionService.verificarValidez(request.getDocumento(), request.getFirma());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error al intentar validar el documento: " + e.getMessage());
+        }
     }
 
     private DocumentoResponse obtenerRespuestaPostDocumento(String mensaje, Documento documento) {

@@ -35,7 +35,7 @@ public class Documento {
     )
     private String rucReceptor;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime fecha;
 
     @NotNull(message = "El campo es obligatorio")

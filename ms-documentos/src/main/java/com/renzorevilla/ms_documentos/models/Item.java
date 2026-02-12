@@ -59,4 +59,15 @@ public class Item {
     public void setIgv(Double igv) {
         this.igv = igv;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "descripcion='" + descripcion + '\'' +
+                ", precio=" + precio +
+                ", cantidad=" + cantidad +
+                ", total=" + total +
+                ", igv=" + igv +
+                '}';
+    }
 }
