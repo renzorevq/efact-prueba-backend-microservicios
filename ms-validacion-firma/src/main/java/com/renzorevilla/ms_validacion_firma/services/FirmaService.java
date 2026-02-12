@@ -20,8 +20,6 @@ public class FirmaService {
     @Value("${app.key.private}")
     private String llavePrivada;
 
-    private final ObjectMapper mapper = new ObjectMapper();
-
     public Documento firmarDocumento(Documento documento){
 
         try {
@@ -59,7 +57,12 @@ public class FirmaService {
 
             byte[] encriptado = cipher.doFinal(hash);
 
-            return Base64.getEncoder().encodeToString(encriptado);
+            byte[] paquete = new byte[iv.length + encriptado.length];
+
+            System.arraycopy(iv, 0, paquete, 0, iv.length);
+            System.arraycopy(encriptado, 0, paquete, iv.length, encriptado.length);
+
+            return Base64.getEncoder().encodeToString(paquete);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
