@@ -23,10 +23,6 @@ public class ValidacionService {
 
     public ValidacionResponse verificarValidez(Documento documento, String firma) {
         try {
-
-            System.out.println(documento);
-            System.out.println(firma);
-
             SecretKey llave = obtenerLlave(llavePrivada);
 
             byte[] paquete = Base64.getDecoder().decode(firma);
@@ -39,6 +35,8 @@ public class ValidacionService {
 
             Cipher cipher = Cipher.getInstance(CryptoConstants.CIPHER_TRANSFORMATION);
             cipher.init(Cipher.DECRYPT_MODE, llave, new GCMParameterSpec(CryptoConstants.TAG_LENGTH_BITS, iv));
+
+            documento.getValidacion().setFirma(null);
 
             var hashFirmado = cipher.doFinal(cifrado);
             byte[] hashActual = obtenerHash(obtenerBytes(documento));
