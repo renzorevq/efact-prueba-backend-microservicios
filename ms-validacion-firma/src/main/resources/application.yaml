@@ -5,10 +5,17 @@ server:
   port: 8082
 
 spring:
+  mongodb:
+    host: localhost
+    port: 27017
+    database: documento_bd
+
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
 
-
+app:
+  key:
+    private: Lz^&RQukkUsBBH!9RihP
