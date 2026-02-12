@@ -7,9 +7,11 @@ import com.renzorevilla.ms_documentos.repositories.DocumentoRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -101,49 +103,20 @@ public class DocumentoService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "El documento esta eliminado. No se pudo actualizar.");
         }
 
+        // Verificar que no halla sido validado
+        if(documentoEncontrado.getValidacion().getEstado() == Estado.VALIDO) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "El documento ya ha sido validado");
+        }
+
         // Actualizar campos
-        Documento documentoValido = validarCamposDocumento(documentoEncontrado, documento);
-        this._repository.save(documentoValido);
+        try {
+            this._repository.patchById(idDocumento, documento);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los datos del documento son incorrectos: " + e.getMessage());
+        }
 
         // Respuesta
         return obtenerRespuestaPostDocumento("El documento ha sido actualizado con exito", documentoEncontrado);
-    }
-
-    // UTILS
-
-    private Documento validarCamposDocumento(Documento documentoEncontrado, Documento documento){
-
-        if(validarPropiedadEnDocumento(documento.getRucEmisor(), "rucEmisor"))
-            documentoEncontrado.setRucEmisor(documento.getRucEmisor());
-
-        if(validarPropiedadEnDocumento(documento.getRucReceptor(), "rucReceptor"))
-            documentoEncontrado.setRucReceptor(documento.getRucReceptor());
-
-        if(validarPropiedadEnDocumento(documento.getSubtotal(), "subtotal"))
-            documentoEncontrado.setSubtotal(documento.getSubtotal());
-
-        if(validarPropiedadEnDocumento(documento.getIgv(), "igv"))
-            documentoEncontrado.setIgv(documento.getIgv());
-
-        if(validarPropiedadEnDocumento(documento.getTotal(), "total"))
-            documentoEncontrado.setTotal(documento.getTotal());
-
-        if(validarPropiedadEnDocumento(documento.getItems(), "items"))
-            documentoEncontrado.setItems(documento.getItems());
-
-        return documentoEncontrado;
-    }
-
-    private boolean validarPropiedadEnDocumento(Object valor, String propiedad){
-        if (valor != null) {
-            Set<ConstraintViolation<Documento>> error = _validator.validateValue(Documento.class, propiedad, valor);
-            if(!error.isEmpty()){
-                String mensaje = error.iterator().next().getMessage();
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, mensaje);
-            }
-        }
-
-        return valor != null;
     }
 
     private DocumentoResponse obtenerRespuestaPostDocumento(String mensaje, Documento documento) {

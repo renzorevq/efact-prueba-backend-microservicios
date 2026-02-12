@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface DocumentoRepository extends MongoRepository<Documento, String> {
+public interface DocumentoRepository extends MongoRepository<Documento, String>, DocumentoRespositoryCustom {
 
     Documento findTopByOrderByIdDocumentoDesc();
 

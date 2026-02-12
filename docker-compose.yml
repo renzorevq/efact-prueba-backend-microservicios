@@ -19,7 +19,7 @@ services:
     environment:
       MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
-      MONGO_DB: ${MONGO_DB}
+      MONGO_BD: ${MONGO_BD}
       RABBIT_HOST: ${RABBIT_HOST}
       RABBIT_PORT: ${RABBIT_PORT}
       RABBIT_USER: ${RABBIT_USER}
@@ -37,7 +37,7 @@ services:
 #      MONGO
       MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
-      MONGO_DB: ${MONGO_BD}
+      MONGO_BD: ${MONGO_BD}
 
 #      RABBIT
       RABBIT_HOST: ${RABBIT_HOST}
