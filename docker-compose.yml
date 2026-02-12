@@ -49,7 +49,7 @@ services:
       PRIVATE_KEY: ${PRIVATE_KEY}
 
     ports:
-      - "5001:8081"
+      - "5000:8081"
     depends_on:
       - mongo
       - rabbitmq
